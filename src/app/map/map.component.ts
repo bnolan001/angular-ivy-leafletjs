@@ -22,11 +22,16 @@ export class MapComponent implements OnInit {
       zoom: 4,
       minZoom: 1,
       maxZoom: 10
-    }).addEventListener("moveend", this.onCenterChange, this);
+    }) // Create a callback for when the user changes the zoom
+    .addEventListener("zoomlevelschange", this.onZoomChange, this)
+     // Create a callback for when the map is moved
+    .addEventListener("moveend", this.onCenterChange, this);
+
+    // Define where we are going to get the actual map
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addEventListener("zoomlevelschange", this.onCenterChange, this);
+    });
     this.markersLayer.addTo(this.map);
     tiles.addTo(this.map);
   }
@@ -42,6 +47,16 @@ export class MapComponent implements OnInit {
     // Retrieve the new center coordinates
     let latLng: L.LatLng = event.sourceTarget.getCenter();
     console.debug(`MapComponent:onCenterChange: Lat: ${latLng.lat}, Lng: ${latLng.lng}`);
+  }
+
+/**
+ * Event callback for when the zoom level changes
+ */
+  onZoomChange(event: any) {
+    console.debug(`MapComponent:onZoomChange: Starting`);
+    // Retrieve the new map boundaries 
+    let mapBoundary: L.LatLngBounds = this.map.getBounds();
+    console.debug(`MapComponent:onZoomChange: Boundary: ${JSON.stringify(mapBoundary)}`);
   }
 
 /**
