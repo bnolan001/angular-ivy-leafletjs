@@ -8,11 +8,8 @@ import * as L from "leaflet";
 })
 export class MapComponent implements OnInit {
   map: L.Map;
-  markersLayer: L.LayerGroup;
 
   constructor() {
-
-    this.markersLayer = new L.LayerGroup();
   }
 
   ngOnInit() {
@@ -29,10 +26,10 @@ export class MapComponent implements OnInit {
 
     // Define where we are going to get the actual map
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
+      maxZoom: 10,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
-    this.markersLayer.addTo(this.map);
+
     tiles.addTo(this.map);
   }
 
